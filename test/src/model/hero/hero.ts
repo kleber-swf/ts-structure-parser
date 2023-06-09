@@ -84,13 +84,21 @@ export class Hero {
 	@FieldDecoratorWithFuncParam(testFunction)
 	public simpleArray: number[];
 
-	// private _foo = true;
-	// public get foo() { return this._foo; }
-	// public set foo(value: boolean) { this._foo = value; }
+	private _foo = true;
 
-	// private _bar = 0;
-	// public get bar() { return this._bar; }
+	/** Foo documentation */
+	@FieldDecoratorWithParam('array of objects from external reference')
+	public get foo() { return this._foo; }
+	public set foo(value: boolean) { this._foo = value; }
 
-	// private _baz = '';
-	// public set baz(value: string) { this._baz = value; }
+	private _bar = 0;
+
+	/** Bar documentation */
+	@FieldDecoratorWithParam('array of objects from external reference')
+	public get bar() { return this._bar; }
+
+	private _baz = '';
+	@FieldDecoratorWithParam('array of objects from external reference')
+	/** Baz documentation */
+	public set baz(value: string) { this._baz = value; }
 }

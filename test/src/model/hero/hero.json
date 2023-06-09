@@ -5,7 +5,7 @@
 		{
 			"name": "HeroDetail",
 			"doc": "/**\n * Hero Detail comment before decorators\n * with multiple lines\n */",
-			"methods": [],
+			"isInterface": false,
 			"typeParameters": [],
 			"typeParameterConstraint": [],
 			"implements": [],
@@ -64,7 +64,8 @@
 					]
 				}
 			],
-			"isInterface": false,
+			"accessors": [],
+			"methods": [],
 			"decorators": [
 				{
 					"name": "ClassDecorator",
@@ -83,7 +84,7 @@
 		{
 			"name": "Hero",
 			"doc": "/**\n* Hero class documentation after decorators\n* with multiple lines\n*/",
-			"methods": [],
+			"isInterface": false,
 			"typeParameters": [],
 			"typeParameterConstraint": [],
 			"implements": [],
@@ -225,9 +226,71 @@
 							"arguments": ["testFunction"]
 						}
 					]
+				},
+				{
+					"name": "_foo",
+					"doc": "",
+					"type": null,
+					"annotations": [],
+					"valueConstraint": {
+						"isCallConstraint": false,
+						"value": true
+					},
+					"optional": false,
+					"decorators": []
+				},
+				{
+					"name": "_bar",
+					"doc": "",
+					"type": null,
+					"annotations": [],
+					"valueConstraint": {
+						"isCallConstraint": false,
+						"value": 0
+					},
+					"optional": false,
+					"decorators": []
+				},
+				{
+					"name": "_baz",
+					"doc": "",
+					"type": null,
+					"annotations": [],
+					"valueConstraint": {
+						"isCallConstraint": false,
+						"value": ""
+					},
+					"optional": false,
+					"decorators": []
 				}
 			],
-			"isInterface": false,
+			"accessors": [
+				{
+					"name": "foo",
+					"direction": 0,
+					"doc": "/** Foo documentation */",
+					"type": null,
+					"decorators": [
+						{
+							"name": "FieldDecoratorWithParam",
+							"arguments": ["array of objects from external reference"]
+						}
+					]
+				},
+				{
+					"name": "bar",
+					"direction": 0,
+					"doc": "/** Bar documentation */",
+					"type": null,
+					"decorators": [
+						{
+							"name": "FieldDecoratorWithParam",
+							"arguments": ["array of objects from external reference"]
+						}
+					]
+				}
+			],
+			"methods": [],
 			"decorators": [
 				{
 					"name": "ClassDecorator",

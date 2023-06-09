@@ -189,17 +189,7 @@
 		{
 			"name": "TestClassWithFunc",
 			"doc": "",
-			"methods": [
-				{
-					"returnType": null,
-					"name": "func1",
-					"start": 1737,
-					"end": 1783,
-					"text": "\n\n\tpublic async func1() {\n\t\tconsole.log(1);\n\t}",
-					"arguments": [],
-					"doc": ""
-				}
-			],
+			"isInterface": false,
 			"typeParameters": [],
 			"typeParameterConstraint": [],
 			"implements": [],
@@ -217,7 +207,18 @@
 					"decorators": []
 				}
 			],
-			"isInterface": false,
+			"accessors": [],
+			"methods": [
+				{
+					"returnType": null,
+					"name": "func1",
+					"start": 1737,
+					"end": 1783,
+					"text": "\n\n\tpublic async func1() {\n\t\tconsole.log(1);\n\t}",
+					"arguments": [],
+					"doc": ""
+				}
+			],
 			"decorators": [],
 			"annotations": [],
 			"extends": [],

@@ -10,16 +10,17 @@ namespace Parser {
 		return (matches && matches.length) ? matches[0].toString() : '';
 	}
 
-	export function createClassModel(name: string, isInteface: boolean): tsp.ClassModel {
+	export function createClassModel(name: string, isInterface: boolean): tsp.ClassModel {
 		return {
 			name,
 			doc: '',
-			methods: [],
+			isInterface,
 			typeParameters: [],
 			typeParameterConstraint: [],
 			implements: [],
 			fields: [],
-			isInterface: isInteface,
+			accessors: [],
+			methods: [],
 			decorators: [],
 			annotations: [],
 			extends: [],
@@ -40,6 +41,19 @@ namespace Parser {
 			optional: field.questionToken != null,
 			decorators: (field.decorators && field.decorators.length)
 				? field.decorators.map((el: ts.Decorator) => parseDecorator(el.expression))
+				: [],
+		};
+	}
+
+	export function createAccessorModel(accessor: ts.GetAccessorDeclaration | ts.SetAccessorDeclaration, path: string): tsp.AccessorModel {
+		const name = accessor.name.getText();
+		return {
+			name,
+			direction: accessor.kind === ts.SyntaxKind.GetAccessor ? tsp.DirectionKind.GET : tsp.DirectionKind.SET,
+			doc: extractTsDoc(accessor.getFullText()),
+			type: parseType(accessor.type, path),
+			decorators: (accessor.decorators && accessor.decorators.length)
+				? accessor.decorators.map((el: ts.Decorator) => parseDecorator(el.expression))
 				: [],
 		};
 	}

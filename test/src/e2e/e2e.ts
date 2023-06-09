@@ -15,7 +15,7 @@ describe('E2E Tests', () => {
 		const decls = fs.readFileSync(filePath).toString();
 		const parsedStructure = parseStruct(decls, {}, filePath);
 		const expectedStruct = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
-		fs.writeFileSync(expectedPath + 'c', JSON.stringify(parsedStructure, null, '\t'), 'utf8');
+		// fs.writeFileSync(expectedPath + 'c', JSON.stringify(parsedStructure, null, '\t'), 'utf8');
 		expect(parsedStructure).be.deep.equal(expectedStruct);
 		done();
 	});
@@ -27,7 +27,7 @@ describe('E2E Tests', () => {
 		const decls = fs.readFileSync(filePath).toString();
 		const parsedStructure = parseStruct(decls, {}, filePath);
 		const expectedStruct = JSON.parse(fs.readFileSync(expectedFunc, 'utf8'));
-		fs.writeFileSync(expectedFunc + 'c', JSON.stringify(parsedStructure, null, '\t'), 'utf8');
+		// fs.writeFileSync(expectedFunc + 'c', JSON.stringify(parsedStructure, null, '\t'), 'utf8');
 		expect(parsedStructure).be.deep.equal(expectedStruct);
 		done();
 	});

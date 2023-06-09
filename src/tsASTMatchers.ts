@@ -17,7 +17,6 @@ export namespace Matching {
 	}
 
 	export interface TypedMatcher<T extends Node> extends NodeMatcher {
-
 		/**
 		 * returns null or the value not null means that matched
 		 * @param node
@@ -43,18 +42,9 @@ export namespace Matching {
 	 * calls match function otherwise it returns null
 	 */
 	export class BasicMatcher {
-
-		protected match(node: Node): any {
-			throw new Error();
-		}
-
-		public nodeType(): ts.SyntaxKind {
-			throw new Error();
-		}
-
-		public doMatch(n: Node): any {
-			return n && this.nodeType() === n.kind ? this.match(n) : null;
-		}
+		protected match(node: Node): any { throw new Error(); }
+		public nodeType(): ts.SyntaxKind { throw new Error(); }
+		public doMatch(n: Node): any { return n && this.nodeType() === n.kind ? this.match(n) : null; }
 	}
 
 	export class ClassDeclarationMatcher extends BasicMatcher implements TypedMatcher<ts.ClassDeclaration> {
@@ -65,6 +55,16 @@ export namespace Matching {
 	export class FieldMatcher extends BasicMatcher implements TypedMatcher<ts.ClassDeclaration> {
 		public match(node: ts.PropertyDeclaration): ts.PropertyDeclaration { return node; }
 		public nodeType(): ts.SyntaxKind { return ts.SyntaxKind.PropertyDeclaration; }
+	}
+
+	export class GetAccessorMatcher extends BasicMatcher implements TypedMatcher<ts.AccessorDeclaration> {
+		public match(node: ts.AccessorDeclaration): ts.AccessorDeclaration { return node; }
+		public nodeType(): ts.SyntaxKind { return ts.SyntaxKind.GetAccessor; }
+	}
+
+	export class SetAccessorMatcher extends BasicMatcher implements TypedMatcher<ts.AccessorDeclaration> {
+		public match(node: ts.AccessorDeclaration): ts.AccessorDeclaration { return node; }
+		public nodeType(): ts.SyntaxKind { return ts.SyntaxKind.SetAccessor; }
 	}
 
 	export class AssignmentExpressionMatcher extends BasicMatcher implements TypedMatcher<ts.BinaryExpression> {
@@ -328,11 +328,7 @@ export namespace Matching {
 		return new VariableDeclarationMatcher(left, right, tr);
 	}
 
-	export function field() {
-		return new FieldMatcher();
-	}
-
-	export function classDeclaration() {
-		return new ClassDeclarationMatcher();
-	}
+	export function field() { return new FieldMatcher(); }
+	export function getAccessor() { return new GetAccessorMatcher(); }
+	export function classDeclaration() { return new ClassDeclarationMatcher(); }
 }

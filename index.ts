@@ -65,6 +65,8 @@ export enum TypeKind {
 	UNION
 }
 
+export enum DirectionKind { GET, SET }
+
 export interface TypeModel {
 	typeKind: TypeKind;
 }
@@ -107,6 +109,14 @@ export interface FieldModel {
 	annotations: Annotation[];
 	valueConstraint: Constraint;
 	optional: boolean;
+}
+
+export interface AccessorModel {
+	direction: DirectionKind;
+	name: string;
+	doc: string;
+	type: TypeModel;
+	decorators: Decorator[];
 }
 
 export interface MethodModel {
@@ -152,6 +162,7 @@ export interface ClassModel {
 
 	fields: FieldModel[];
 	methods: MethodModel[];
+	accessors: AccessorModel[];
 
 	typeParameters: string[];
 	typeParameterConstraint: string[];

@@ -3,9 +3,8 @@ import path = require('path');
 import fs = require('fs');
 
 export import tsm = require('./tsASTMatchers');
-// export import helperMethodExtractor = require('./helperMethodExtractor');
 
-import { FieldModel, ModuleModel } from './../index';
+import { ClassModel, DirectionKind, FieldModel, ModuleModel } from './../index';
 import Parser from './parser';
 
 function parseSource(content: string) {
@@ -13,6 +12,7 @@ function parseSource(content: string) {
 }
 
 const fieldMatcher = tsm.Matching.field();
+const getAccessorMatcher = tsm.Matching.getAccessor();
 
 function parseVariableDeclaration(node: ts.Node, module: ModuleModel) {
 	node.forEachChild(child => {
@@ -181,6 +181,43 @@ function parseEnumDeclaration(node: ts.Node, module: ModuleModel) {
 	});
 }
 
+function parseField(field: ts.PropertyDeclaration, clazz: ClassModel, modulePath: string, fields: { [n: string]: FieldModel }) {
+	// const field = fieldMatcher.doMatch(member);
+	// if (!field) return;
+
+	const model = Parser.createFieldModel(field, modulePath);
+
+	if (model.name === '$') {
+		clazz.annotations = model.annotations;
+		return;
+	}
+
+	if (model.name.charAt(0) !== '$' || model.name === '$ref') {
+		fields[model.name] = model;
+		clazz.fields.push(model);
+		return;
+	}
+
+	const targetField = model.name.substring(1);
+	const of = fields[targetField];
+
+	if (of) {
+		of.annotations = model.annotations;
+		return;
+	}
+
+	if (model.name !== '$$') {
+		//console.log('Overriding annotations for field:'+targetField);
+		const overridings = clazz.annotationOverridings[targetField] || [];
+		clazz.annotationOverridings[targetField] = overridings.concat(model.annotations);
+	}
+}
+
+function parseAccessor(accessor: ts.AccessorDeclaration, clazz: ClassModel, modulePath: string, direction: DirectionKind) {
+	const model = Parser.createAccessorModel(accessor, modulePath);
+	clazz.accessors.push(model);
+}
+
 function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: string, modulePath: string,
 	moduleName: string, isInterface: boolean) {
 	const classDecl = node as ts.ClassDeclaration;
@@ -204,45 +241,20 @@ function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: stri
 			return;
 		}
 
-		if (member.kind === ts.SyntaxKind.GetAccessor) {
-			console.log('getter');
+		let accessor = getAccessorMatcher.doMatch(member);
+		if (accessor) {
+			parseAccessor(accessor, clazz, modulePath, DirectionKind.GET);
 			return;
 		}
 
-		if (member.kind === ts.SyntaxKind.SetAccessor) {
-			console.log('setter');
+		accessor = getAccessorMatcher.doMatch(member);
+		if (accessor) {
+			parseAccessor(accessor, clazz, modulePath, DirectionKind.SET);
 			return;
 		}
 
-		const field = fieldMatcher.doMatch(member);
-		if (!field) return;
-
-		const model = Parser.createFieldModel(field, modulePath);
-
-		if (model.name === '$') {
-			clazz.annotations = model.annotations;
-			return;
-		}
-
-		if (model.name.charAt(0) !== '$' || model.name === '$ref') {
-			fields[model.name] = model;
-			clazz.fields.push(model);
-			return;
-		}
-
-		const targetField = model.name.substring(1);
-		const of = fields[targetField];
-
-		if (of) {
-			of.annotations = model.annotations;
-			return;
-		}
-
-		if (model.name !== '$$') {
-			//console.log('Overriding annotations for field:'+targetField);
-			const overridings = clazz.annotationOverridings[targetField] || [];
-			clazz.annotationOverridings[targetField] = overridings.concat(model.annotations);
-		}
+		const field = fieldMatcher.doMatch(member)
+		if (field) parseField(field, clazz, modulePath, fields);
 	});
 
 	if (classDecl.typeParameters) {
@@ -293,7 +305,6 @@ export function parseStruct(content: string, modules: { [id: string]: ModuleMode
 
 
 		if (node.kind === ts.SyntaxKind.ModuleDeclaration) {
-			// currentModule = (node as ts.ModuleDeclaration).name.text;
 			moduleName = node.getText();
 			return;
 		}
