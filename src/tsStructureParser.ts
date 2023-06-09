@@ -4,7 +4,7 @@ export import tsm = require('./tsASTMatchers');
 export import helperMethodExtractor = require('./helperMethodExtractor');
 
 import fsUtil = require('./fsUtils');
-import { EnumMemberDeclaration, FieldModel, ModuleModel } from './../index';
+import { FieldModel, ModuleModel } from './../index';
 import Parser from './parser';
 
 function parseSource(content: string) {
@@ -16,19 +16,21 @@ const fieldMatcher = tsm.Matching.field();
 function parseVariableDeclaration(node: ts.Node, module: ModuleModel) {
 	node.forEachChild(child => {
 		if (child.kind === ts.SyntaxKind.FunctionExpression) {
-			const isExport = !!((node.parent.parent.modifiers || []) as any[])
+			const isExport = !!((node.parent.parent.modifiers || []) as ts.ModifiersArray)
 				.find(m => m.kind === ts.SyntaxKind.ExportKeyword);
-			const params = [];
-			const isAsync = !!(child.modifiers || [] as any)
-				.find((m: any) => m.kind === ts.SyntaxKind.AsyncKeyword);
+
+			const isAsync = !!((child.modifiers || []) as ts.ModifiersArray)
+				.find(m => m.kind === ts.SyntaxKind.AsyncKeyword);
+
 			const name = (node as ts.FunctionDeclaration).name.escapedText as string;
-			(child as any).parameters.forEach(param => {
-				params.push({
+
+			const params = (child as ts.FunctionDeclaration).parameters
+				.map(param => ({
 					name: param.name.getText(),
 					type: (param.type && param.type.getText()) || 'any',
 					mandatory: !param.questionToken,
-				});
-			});
+				}));
+
 			module.functions.push({
 				isArrow: false,
 				isExport,
@@ -42,25 +44,26 @@ function parseVariableDeclaration(node: ts.Node, module: ModuleModel) {
 }
 
 function parseImportDeclaration(node: ts.Node, module: ModuleModel, modulePath: string) {
-	const impDec = <ts.ImportDeclaration>node;
+	const impDec = node as ts.ImportDeclaration;
 	const localMod = parseSource(node.getText());
 	const localImport = { clauses: [], absPathNode: [], absPathString: '', isNodeModule: false };
+
 	let localNamedImports: string[];
 	let localAbsPath: string[];
 	let localAbsPathString: string;
 	let localNodeModule = false;
 	const path = require('path');
 
-	tsm.Matching.visit(localMod, y => {
-		if (y.kind === ts.SyntaxKind.NamedImports) {
+	tsm.Matching.visit(localMod, m => {
+		if (m.kind === ts.SyntaxKind.NamedImports) {
 			const lit = impDec.importClause.getText();
 			localNamedImports = lit.substring(1, lit.length - 1).split(',');
-			localImport.clauses = localNamedImports.map(im => {
-				return im.trim();
-			});
+			localImport.clauses = localNamedImports.map(im => im.trim());
+			return;
 		}
-		if (y.kind === ts.SyntaxKind.StringLiteral) {
-			const localPath = y.getText().substring(1, y.getText().length - 1);
+
+		if (m.kind === ts.SyntaxKind.StringLiteral) {
+			const localPath = m.getText().substring(1, m.getText().length - 1);
 			if (localPath[0] === '.') {
 				const localP = fsUtil.resolve(fsUtil.dirname(modulePath) + '/', localPath).split(process.cwd()).join('.');
 				localAbsPath = localP.split(path.sep);
@@ -81,118 +84,101 @@ function parseImportDeclaration(node: ts.Node, module: ModuleModel, modulePath: 
 function parseFunctionDeclaration(node: ts.Node, module: ModuleModel) {
 	const isArrow = node.kind === ts.SyntaxKind.ArrowFunction;
 
-	const functionDeclaration = isArrow ? node as ts.ArrowFunction : node as ts.FunctionDeclaration;
-	const parentVariable = functionDeclaration.parent as ts.VariableDeclaration;
+	const fnDeclaration = isArrow ? node as ts.ArrowFunction : node as ts.FunctionDeclaration;
+	const parentVariable = fnDeclaration.parent as ts.VariableDeclaration;
+
 	const name = isArrow
 		? parentVariable.name && parentVariable.name.getText()
-		: functionDeclaration.name.text;
+		: fnDeclaration.name.text;
+
+	if (!name) return;
 
 	let isAsync = false;
 	let isExport = false;
-	const params: { name: string, type: string, mandatory: boolean }[] = [];
-	if (name) {
-		let modifierContainer = isArrow
-			? (functionDeclaration.parent as ts.VariableDeclaration).initializer
-			: functionDeclaration;
-		if (modifierContainer && modifierContainer.modifiers) {
-			modifierContainer.modifiers.forEach(modi => {
-				if (modi.kind === ts.SyntaxKind.AsyncKeyword) {
-					isAsync = true;
-				}
-				if (modi.kind === ts.SyntaxKind.ExportKeyword && !isArrow) {
-					isExport = true;
-				}
-			});
-		}
 
-		if (isArrow && !isExport) {
-			do {
-				modifierContainer = modifierContainer.parent as ts.Expression;
-			} while (modifierContainer && modifierContainer.kind !== ts.SyntaxKind.VariableStatement);
+	let modifierContainer = isArrow
+		? (fnDeclaration.parent as ts.VariableDeclaration).initializer
+		: fnDeclaration;
 
-			if (modifierContainer && modifierContainer.modifiers) {
-				modifierContainer.modifiers.forEach(modi => {
-					if (modi.kind === ts.SyntaxKind.ExportKeyword) {
-						isExport = true;
-					}
-				});
-			}
-		}
-
-		functionDeclaration.parameters.forEach(param => {
-			params.push({
-				name: param.name.getText(),
-				type: (param.type && param.type.getText()) || 'any',
-				mandatory: !param.questionToken,
-			});
-
-		});
-		module.functions.push({
-			isArrow,
-			isExport,
-			isAsync,
-			name,
-			params,
-			doc: Parser.extractTsDoc(node.getFullText()),
+	if (modifierContainer && modifierContainer.modifiers) {
+		modifierContainer.modifiers.forEach(m => {
+			if (m.kind === ts.SyntaxKind.AsyncKeyword) isAsync = true;
+			if (m.kind === ts.SyntaxKind.ExportKeyword && !isArrow) isExport = true;
 		});
 	}
+
+	if (isArrow && !isExport) {
+		do {
+			modifierContainer = modifierContainer.parent as ts.Expression;
+		} while (modifierContainer && modifierContainer.kind !== ts.SyntaxKind.VariableStatement);
+
+		if (modifierContainer && modifierContainer.modifiers) {
+			isExport = modifierContainer.modifiers.some(m => m.kind === ts.SyntaxKind.ExportKeyword);
+		}
+	}
+
+	const params = fnDeclaration.parameters.map(param => ({
+		name: param.name.getText(),
+		type: (param.type && param.type.getText()) || 'any',
+		mandatory: !param.questionToken,
+	}));
+
+	module.functions.push({
+		isArrow,
+		isExport,
+		isAsync,
+		name,
+		params,
+		doc: Parser.extractTsDoc(node.getFullText()),
+	});
 }
 
 function parseImportEqualsDeclaraction(node: ts.Node, module: ModuleModel, modules: { [id: string]: ModuleModel }, modulePath: string) {
-	const imp = <ts.ImportEqualsDeclaration>node;
+	const imp = node as ts.ImportEqualsDeclaration;
 	const namespace = imp.name.text;
 	if (namespace === 'RamlWrapper') return;
 
-	const path = <ts.ExternalModuleReference>imp.moduleReference;
-
-	const literal = <ts.StringLiteral>path.expression;
+	const path = imp.moduleReference as ts.ExternalModuleReference;
+	const literal = path.expression as ts.StringLiteral;
 	const importPath = literal.text;
 	const absPath = fsUtil.resolve(fsUtil.dirname(modulePath) + '/', importPath) + '.ts';
+
 	if (!fsUtil.existsSync(absPath)) {
 		throw new Error('Path ' + importPath + ' resolve to ' + absPath + 'do not exists');
 	}
+
 	if (!modules[absPath]) {
 		const cnt = fsUtil.readFileSync(absPath);
 		parseStruct(cnt, modules, absPath);
 	}
+
 	module.imports[namespace] = modules[absPath];
 }
 
 function parseTypeAliasDeclaration(node: ts.Node, module: ModuleModel, modulePath: string) {
-	const u = <ts.TypeAliasDeclaration>node;
-	if (u.name) {
-		const aliasName = u.name.text;
-		const type = Parser.parseType(u.type, modulePath);
-		module.aliases.push({ name: aliasName, type });
-	}
+	const alias = node as ts.TypeAliasDeclaration;
+	if (!alias.name) return;
+	module.aliases.push({
+		name: alias.name.text,
+		type: Parser.parseType(alias.type, modulePath)
+	});
 }
 
 function parseEnumDeclaration(node: ts.Node, module: ModuleModel) {
 	const e = node as ts.EnumDeclaration;
-	const members: EnumMemberDeclaration[] = [];
-	if (e.members) {
-		e.members.forEach(member => {
-			let value: number | string | undefined;
-			if (member.initializer) {
-				if (member.initializer.kind === ts.SyntaxKind.NumericLiteral) {
-					value = parseInt((member.initializer as any).text);
-				}
-				if (
-					member.initializer.kind === ts.SyntaxKind.StringLiteral ||
-					member.initializer.kind === ts.SyntaxKind.JsxText
-				) {
-					value = String((member.initializer as any).text);
-				}
-			}
-			members.push({
-				name: String((member.name as any).text),
-				value,
-			});
-		});
-	}
-	if (e.name) {
-		module.enumDeclarations.push({ name: e.name.text, members });
-	}
+	if (!e.name) return;
+
+	module.enumDeclarations.push({
+		name: e.name.getText(),
+		doc: Parser.extractTsDoc(e.getFullText()),
+		members: e.members
+			? e.members.map(member => ({
+				name: member.name.getText(),
+				doc: Parser.extractTsDoc(member.getFullText()),
+				value: member.initializer ? JSON.parse(member.initializer.getText()) : undefined,
+			}))
+			: undefined,
+	});
 }
 
 function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: string, modulePath: string,

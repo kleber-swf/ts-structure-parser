@@ -50,11 +50,13 @@ export interface ImportNode {
 
 export class EnumMemberDeclaration {
 	name: string;
+	doc: string;
 	value?: number | string;
 }
 
 export class EnumDeclaration {
 	name: string;
+	doc: string;
 	members: EnumMemberDeclaration[];
 }
 

@@ -1,6 +1,16 @@
 import { ClassDecorator, ClassDecoratorWithParam, FieldDecorator, FieldDecoratorWith2Params, FieldDecoratorWithAnyParam, FieldDecoratorWithFuncParam, FieldDecoratorWithParam } from '../decorator/decorator';
 import { TestClassWithFunc, testFunction } from './testFunction';
 
+/** This is a documentation for enum */
+export enum TestEnum {
+	/** test */
+	foo = 1,
+	/** another */
+	BAR = 2,
+	/** ok */
+	Baz = null
+}
+
 /**
  * Hero Detail comment before decorators
  * with multiple lines
@@ -24,8 +34,8 @@ export class HeroDetail {
 			paramUno: 15,
 			paramDos: 'quatro',
 			'paramsTre': false,
-			paramsFour: testFunction,
-			paramsFive: TestClassWithFunc.func,
+			paramsQuatro: testFunction,
+			paramsCinco: TestClassWithFunc.func,
 		},
 	})
 	public detail: string;
@@ -73,4 +83,14 @@ export class Hero {
 	@FieldDecoratorWithFuncParam(() => { console.log('function'); })
 	@FieldDecoratorWithFuncParam(testFunction)
 	public simpleArray: number[];
+
+	// private _foo = true;
+	// public get foo() { return this._foo; }
+	// public set foo(value: boolean) { this._foo = value; }
+
+	// private _bar = 0;
+	// public get bar() { return this._bar; }
+
+	// private _baz = '';
+	// public set baz(value: string) { this._baz = value; }
 }
