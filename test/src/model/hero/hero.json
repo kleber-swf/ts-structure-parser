@@ -1,344 +1,321 @@
 {
-    "classes":
-    [
-        {
-            "name": "HeroDetail",
-            "methods": [],
-            "typeParameters": [],
-            "typeParameterConstraint": [],
-            "implements": [],
-            "fields":
-            [
-                {
-                    "name": "id",
-                    "type":
-                    {
-                        "typeName": "number",
-                        "nameSpace": "",
-                        "basicName": "number",
-                        "typeKind": 0,
-                        "typeArguments": [],
-                        "modulePath": null
-                    },
-                    "annotations": [],
-                    "valueConstraint": null,
-                    "optional": true,
-                    "decorators": []
-                },
-                {
-                    "name": "detail",
-                    "type":
-                    {
-                        "typeName": "string",
-                        "nameSpace": "",
-                        "basicName": "string",
-                        "typeKind": 0,
-                        "typeArguments": [],
-                        "modulePath": null
-                    },
-                    "annotations": [],
-                    "valueConstraint": null,
-                    "optional": false,
-                    "decorators":
-                    [
-                        {
-                            "name": "FieldDecorator",
-                            "arguments": []
-                        },
-                        {
-                            "arguments": [
-                                {
-                                    "paramDos": false,
-                                    "paramTres": {
-                                        "paramDos": "quatro",
-                                        "paramUno": 15,
-                                        "paramsFive": "TestClassWithFunc.func",
-                                        "paramsFour": "testFunction",
-                                        "paramsTre": false
-                                    },
-                                    "paramUno": "123"
-                                }
-                            ],
-                            "name": "FieldDecoratorWithAnyParam"
-                        }
-                    ]
-                }
-            ],
-            "isInterface": false,
-            "decorators":
-            [
-                {
-                    "name": "ClassDecorator",
-                    "arguments": []
-                },
-                {
-                    "name": "ClassDecoratorWithParam",
-                    "arguments": ["HeroDetailClass"]
-                }
-            ],
-            "annotations": [],
-            "extends": [],
-            "moduleName": null,
-            "annotationOverridings": {}
-        },
-        {
-            "name": "Hero",
-            "methods": [],
-            "typeParameters": [],
-            "typeParameterConstraint": [],
-            "implements": [],
-            "fields":
-            [
-                {
-                    "name": "id",
-                    "type":
-                    {
-                        "typeName": "number",
-                        "nameSpace": "",
-                        "basicName": "number",
-                        "typeKind": 0,
-                        "typeArguments": [],
-                        "modulePath": null
-                    },
-                    "annotations": [],
-                    "valueConstraint": null,
-                    "optional": false,
-                    "decorators":
-                    [
-                        {
-                            "name": "FieldDecoratorWithParam",
-                            "arguments": ["int, primary key"]
-                        },
-                        {
-                            "name": "FieldDecorator",
-                            "arguments": []
-                        }
-                    ]
-                },
-                {
-                    "name": "name",
-                    "type":
-                    {
-                        "typeName": "string",
-                        "nameSpace": "",
-                        "basicName": "string",
-                        "typeKind": 0,
-                        "typeArguments": [],
-                        "modulePath": null
-                    },
-                    "annotations": [],
-                    "valueConstraint": null,
-                    "optional": false,
-                    "decorators":
-                    [
-                        {
-                            "name": "FieldDecoratorWith2Params",
-                            "arguments": ["string",
-                                { 
-                                  "required": true, 
-                                  "max-length": 128, 
-                                  "min-length": 5 
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "detail",
-                    "type":
-                    {
-                        "typeName": "HeroDetail",
-                        "nameSpace": "",
-                        "basicName": "HeroDetail",
-                        "typeKind": 0,
-                        "typeArguments": [],
-                        "modulePath": "./test/src/model/hero/hero.ts"
-                    },
-                    "annotations": [],
-                    "valueConstraint": null,
-                    "optional": false,
-                    "decorators":
-                    [
-                        {
-                            "name": "FieldDecoratorWithParam",
-                            "arguments": ["external reference"]
-                        },
-                        {
-                            "name": "FieldDecorator",
-                            "arguments": []
-                        }
-                    ]
-                },
-                {
-                    "name": "details",
-                    "type":
-                    {
-                        "base":
-                        {
-                            "typeName": "HeroDetail",
-                            "nameSpace": "",
-                            "basicName": "HeroDetail",
-                            "typeKind": 0,
-                            "typeArguments": [],
-                            "modulePath": "./test/src/model/hero/hero.ts"
-                        },
-                        "typeKind": 1
-                    },
-                    "annotations": [],
-                    "valueConstraint": null,
-                    "optional": false,
-                    "decorators":
-                    [
-                        {
-                            "name": "FieldDecoratorWithParam",
-                            "arguments": ["array of objects from external reference"]
-                        },
-                        {
-                            "name": "FieldDecorator",
-                            "arguments": []
-                        }
-                    ]
-                },
-                {
-                    "name": "simpleArray",
-                    "type":
-                    {
-                        "base":
-                        {
-                            "typeName": "number",
-                            "nameSpace": "",
-                            "basicName": "number",
-                            "typeKind": 0,
-                            "typeArguments": [],
-                            "modulePath": null
-                        },
-                        "typeKind": 1
-                    },
-                    "annotations": [],
-                    "valueConstraint": null,
-                    "optional": false,
-                    "decorators":
-                    [
-                        {
-                            "name": "FieldDecorator",
-                            "arguments": []
-                        },
-                        {
-                            "arguments":[
-                                "() => { console.log(\"function\"); }"
-                            ],
-                            "name": "FieldDecoratorWithFuncParam"
-                        },
-                        {
-                            "arguments": [
-                                "testFunction"
-                            ],
-                            "name": "FieldDecoratorWithFuncParam"
-                        }
-                    ]
-                }
-            ],
-            "isInterface": false,
-            "decorators":
-            [
-                {
-                    "name": "ClassDecorator",
-                    "arguments": []
-                },
-                {
-                    "name": "ClassDecoratorWithParam",
-                    "arguments": ["HeroClass"]
-                },
-                {
-                "arguments": [
-                {
-                    "samenameintitle": 1,
-                    "secondItem": "samenameintitle/22"
-                }
-                ],
-                "name": "FieldDecoratorWithAnyParam"
-                },{
-                    "arguments": [
-                        {
-                            "nullable": true,
-                            "secondItem": "null"
-                        }
-                    ],
-                    "name": "FieldDecoratorWithAnyParam"
-                }
-            ],
-            "annotations": [],
-            "extends": [],
-            "moduleName": null,
-            "annotationOverridings": {}
-        }
-    ],
-    "_imports": [
-        {
-            "absPathNode": [
-                ".",
-                "test",
-                "src",
-                "model",
-                "decorator",
-                "decorator"
-            ],
-            "absPathString": "./test/src/model/decorator/decorator",
-            "clauses": [
-                "ClassDecorator",
-                "ClassDecoratorWithParam"
-            ],
-            "isNodeModule": false
-        },
-        {
-            "absPathNode": [
-                ".",
-                "test",
-                "src",
-                "model",
-                "decorator",
-                "decorator"
-            ],
-            "absPathString": "./test/src/model/decorator/decorator",
-            "clauses": [
-                "FieldDecorator",
-                "FieldDecoratorWithParam",
-                "FieldDecoratorWith2Params",
-                "FieldDecoratorWithFuncParam",
-                "FieldDecoratorWithAnyParam"
-            ],
-            "isNodeModule": false
-        },
-        {
-            "absPathNode": [
-                ".",
-                "test",
-                "src",
-                "model",
-                "hero",
-                "testFunction"
-            ],
-            "absPathString": "./test/src/model/hero/testFunction",
-            "clauses":  [
-                "testFunction",
-                "TestClassWithFunc"
-            ],
-            "isNodeModule": false
-        },
-        {
-            "absPathNode": [
-                "grunt"
-            ],
-            "absPathString": "grunt",
-            "clauses": [
-                ""
-            ],
-            "isNodeModule": true
-        }
-    ],
-    "aliases": [],
-    "enumDeclarations": [],
-    "functions": [],
-    "imports": {},
-    "name": "./test/src/model/hero/hero.ts"
+	"name": "./test/src/model/hero/hero.ts",
+	"functions": [],
+	"classes": [
+		{
+			"name": "HeroDetail",
+			"doc": "/**\n * Hero Detail comment before decorators\n * with multiple lines\n */",
+			"methods": [],
+			"typeParameters": [],
+			"typeParameterConstraint": [],
+			"implements": [],
+			"fields": [
+				{
+					"name": "id",
+					"doc": "/** id field comment with no decorators single line */",
+					"type": {
+						"typeName": "number",
+						"nameSpace": "",
+						"basicName": "number",
+						"typeKind": 0,
+						"typeArguments": [],
+						"modulePath": null
+					},
+					"annotations": [],
+					"valueConstraint": null,
+					"optional": true,
+					"decorators": []
+				},
+				{
+					"name": "detail",
+					"doc": "/**\n\t * Detail field comment before decorators\n\t * with multiple lines\n\t */",
+					"type": {
+						"typeName": "string",
+						"nameSpace": "",
+						"basicName": "string",
+						"typeKind": 0,
+						"typeArguments": [],
+						"modulePath": null
+					},
+					"annotations": [],
+					"valueConstraint": null,
+					"optional": false,
+					"decorators": [
+						{
+							"name": "FieldDecorator",
+							"arguments": []
+						},
+						{
+							"name": "FieldDecoratorWithAnyParam",
+							"arguments": [
+								{
+									"paramUno": "123",
+									"paramDos": false,
+									"paramTres": {
+										"paramUno": 15,
+										"paramDos": "quatro",
+										"paramsTre": false,
+										"paramsFour": "testFunction",
+										"paramsFive": "TestClassWithFunc.func"
+									}
+								}
+							]
+						}
+					]
+				}
+			],
+			"isInterface": false,
+			"decorators": [
+				{
+					"name": "ClassDecorator",
+					"arguments": []
+				},
+				{
+					"name": "ClassDecoratorWithParam",
+					"arguments": [
+						"HeroDetailClass"
+					]
+				}
+			],
+			"annotations": [],
+			"extends": [],
+			"moduleName": null,
+			"annotationOverridings": {}
+		},
+		{
+			"name": "Hero",
+			"doc": "/**\n* Hero class documentation after decorators\n* with multiple lines\n*/",
+			"methods": [],
+			"typeParameters": [],
+			"typeParameterConstraint": [],
+			"implements": [],
+			"fields": [
+				{
+					"name": "id",
+					"doc": "/**\n\t * Id field comment after decorators\n\t * with multiple lines\n\t */",
+					"type": {
+						"typeName": "number",
+						"nameSpace": "",
+						"basicName": "number",
+						"typeKind": 0,
+						"typeArguments": [],
+						"modulePath": null
+					},
+					"annotations": [],
+					"valueConstraint": null,
+					"optional": false,
+					"decorators": [
+						{
+							"name": "FieldDecoratorWithParam",
+							"arguments": [
+								"int, primary key"
+							]
+						},
+						{
+							"name": "FieldDecorator",
+							"arguments": []
+						}
+					]
+				},
+				{
+					"name": "name",
+					"doc": "/** Name field comment before decorators single line */",
+					"type": {
+						"typeName": "string",
+						"nameSpace": "",
+						"basicName": "string",
+						"typeKind": 0,
+						"typeArguments": [],
+						"modulePath": null
+					},
+					"annotations": [],
+					"valueConstraint": null,
+					"optional": false,
+					"decorators": [
+						{
+							"name": "FieldDecoratorWith2Params",
+							"arguments": [
+								"string",
+								{
+									"required": true,
+									"max-length": 128,
+									"min-length": 5
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "detail",
+					"doc": "/** Name field comment after decorators single line */",
+					"type": {
+						"typeName": "HeroDetail",
+						"nameSpace": "",
+						"basicName": "HeroDetail",
+						"typeKind": 0,
+						"typeArguments": [],
+						"modulePath": "./test/src/model/hero/hero.ts"
+					},
+					"annotations": [],
+					"valueConstraint": null,
+					"optional": false,
+					"decorators": [
+						{
+							"name": "FieldDecoratorWithParam",
+							"arguments": [
+								"external reference"
+							]
+						},
+						{
+							"name": "FieldDecorator",
+							"arguments": []
+						}
+					]
+				},
+				{
+					"name": "details",
+					"doc": "",
+					"type": {
+						"base": {
+							"typeName": "HeroDetail",
+							"nameSpace": "",
+							"basicName": "HeroDetail",
+							"typeKind": 0,
+							"typeArguments": [],
+							"modulePath": "./test/src/model/hero/hero.ts"
+						},
+						"typeKind": 1
+					},
+					"annotations": [],
+					"valueConstraint": null,
+					"optional": false,
+					"decorators": [
+						{
+							"name": "FieldDecoratorWithParam",
+							"arguments": [
+								"array of objects from external reference"
+							]
+						},
+						{
+							"name": "FieldDecorator",
+							"arguments": []
+						}
+					]
+				},
+				{
+					"name": "simpleArray",
+					"doc": "",
+					"type": {
+						"base": {
+							"typeName": "number",
+							"nameSpace": "",
+							"basicName": "number",
+							"typeKind": 0,
+							"typeArguments": [],
+							"modulePath": null
+						},
+						"typeKind": 1
+					},
+					"annotations": [],
+					"valueConstraint": null,
+					"optional": false,
+					"decorators": [
+						{
+							"name": "FieldDecorator",
+							"arguments": []
+						},
+						{
+							"name": "FieldDecoratorWithFuncParam",
+							"arguments": [
+								"() => { console.log('function'); }"
+							]
+						},
+						{
+							"name": "FieldDecoratorWithFuncParam",
+							"arguments": [
+								"testFunction"
+							]
+						}
+					]
+				}
+			],
+			"isInterface": false,
+			"decorators": [
+				{
+					"name": "ClassDecorator",
+					"arguments": []
+				},
+				{
+					"name": "ClassDecoratorWithParam",
+					"arguments": [
+						"HeroClass"
+					]
+				},
+				{
+					"name": "FieldDecoratorWithAnyParam",
+					"arguments": [
+						{
+							"samenameintitle": 1,
+							"secondItem": "samenameintitle/22"
+						}
+					]
+				},
+				{
+					"name": "FieldDecoratorWithAnyParam",
+					"arguments": [
+						{
+							"nullable": true,
+							"secondItem": "null"
+						}
+					]
+				}
+			],
+			"annotations": [],
+			"extends": [],
+			"moduleName": null,
+			"annotationOverridings": {}
+		}
+	],
+	"aliases": [],
+	"enumDeclarations": [],
+	"imports": {},
+	"_imports": [
+		{
+			"clauses": [
+				"ClassDecorator",
+				"ClassDecoratorWithParam",
+				"FieldDecorator",
+				"FieldDecoratorWith2Params",
+				"FieldDecoratorWithAnyParam",
+				"FieldDecoratorWithFuncParam",
+				"FieldDecoratorWithParam"
+			],
+			"absPathNode": [
+				".",
+				"test",
+				"src",
+				"model",
+				"decorator",
+				"decorator"
+			],
+			"absPathString": "./test/src/model/decorator/decorator",
+			"isNodeModule": false
+		},
+		{
+			"clauses": [
+				"TestClassWithFunc",
+				"testFunction"
+			],
+			"absPathNode": [
+				".",
+				"test",
+				"src",
+				"model",
+				"hero",
+				"testFunction"
+			],
+			"absPathString": "./test/src/model/hero/testFunction",
+			"isNodeModule": false
+		}
+	]
 }

@@ -12,6 +12,7 @@
 # IDEs and editors
 /.idea
 /.tscache
+.eslintcache
 .project
 .classpath
 .c9/

@@ -1,126 +1,232 @@
-[
-  {
-    "isArrow": false,
-    "isExport": true,
-    "isAsync": false,
-    "name": "testFunction",
-    "params": []
-  },
-  {
-    "isArrow": false,
-    "isExport": true,
-    "isAsync": false,
-    "name": "testFunctionWithNumberSingleType",
-    "params": [ { "name": "params1", "type": "Promise<number>[]", "mandatory": true } ]
-  },
-  {
-    "isArrow": false,
-    "isExport": true,
-    "isAsync": true,
-    "name": "testAsyncFunction",
-    "params": [ { "name": "params1", "type": "string", "mandatory": true }, { "name": "params2", "type": "number", "mandatory": false } ]
-  },
-  {
-    "isArrow": false,
-    "isExport": true,
-    "isAsync": true,
-    "name": "testAsyncFunctionWithReturnValue",
-    "params": [ { "name": "params1", "type": "string", "mandatory": true },   { "name": "params2", "type": "number", "mandatory": false }]
-  },
-  {
-    "isArrow": false,
-    "isExport": true,
-    "isAsync": true,
-    "name": "testAsyncFunctionWithReturnMixValue",
-    "params": [
-        { "name": "params1", "type": "string", "mandatory": true },
-        { "name": "params2", "type": "number", "mandatory": false } ]
-  },
-  {
-    "isArrow": false,
-    "isExport": false,
-    "isAsync": false,
-    "name": "notExportNotAsyncFunction",
-    "params": []
-  },
-  {
-    "isArrow": true,
-    "isExport": true,
-    "isAsync": false,
-    "name": "arrowFunctionLikeVariable",
-    "params": []
-  },
-  {
-    "isArrow": true,
-    "isExport": false,
-    "isAsync": false,
-    "name": "arrowNotExportFunction",
-    "params": []
-  },
-  {
-    "isArrow": true,
-    "isExport": true,
-    "isAsync": true,
-    "name": "arrowAsyncFunctionLikeVariable",
-    "params":  [ { "name": "params1", "type": "string", "mandatory": true } ]
-  },
-  {
-    "isArrow": true,
-    "isExport": false,
-    "isAsync": false,
-    "name": "arrowNotExportFunctionWithMixReturnValue",
-    "params": []
-  },
-  {
-     "isArrow": true,
-     "isAsync": true,
-      "isExport": true,
-      "name": "analogIdsTransformer",
-      "params": [
-        {
-          "mandatory": true,
-          "name": "bol",
-          "type": "boolean"
-        }
-      ]
-    },{
-    "isArrow": false,
-    "isAsync": false,
-    "isExport": true,
-    "name": "funcWithFuncDescription",
-    "params": []
-  },
-  {
-    "isArrow": false,
-    "isAsync": false,
-    "isExport": true,
-    "name": "funcWithFuncDescriptionAndOneParam",
-    "params": [
-      {
-        "mandatory": true,
-        "name": "param",
-        "type": "number"
-      }
-    ]
-  },
-  {
-    "isArrow": false,
-    "isAsync": true,
-    "isExport": false,
-    "name": "asyncFuncWithFuncDescription",
-    "params": []
-  },
-  {
-    "isArrow": false,
-    "isAsync": true,
-    "isExport": true,
-    "name": "asyncFuncWithFuncDescriptionAndOneParam",
-    "params": [
-      {
-        "mandatory": false,
-        "name": "param",
-        "type": "any"
-      }
-    ]
-  }
-]
+{
+	"name": "./test/src/model/hero/testFunction.ts",
+	"functions": [
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": false,
+			"name": "testFunction",
+			"params": [],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": false,
+			"name": "testFunctionWithNumberSingleType",
+			"params": [
+				{
+					"name": "params1",
+					"type": "Promise<number>[]",
+					"mandatory": true
+				}
+			],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": true,
+			"name": "testAsyncFunction",
+			"params": [
+				{
+					"name": "params1",
+					"type": "string",
+					"mandatory": true
+				},
+				{
+					"name": "params2",
+					"type": "number",
+					"mandatory": false
+				}
+			],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": true,
+			"name": "testAsyncFunctionWithReturnValue",
+			"params": [
+				{
+					"name": "params1",
+					"type": "string",
+					"mandatory": true
+				},
+				{
+					"name": "params2",
+					"type": "number",
+					"mandatory": false
+				}
+			],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": true,
+			"name": "testAsyncFunctionWithReturnMixValue",
+			"params": [
+				{
+					"name": "params1",
+					"type": "string",
+					"mandatory": true
+				},
+				{
+					"name": "params2",
+					"type": "number",
+					"mandatory": false
+				}
+			],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": false,
+			"isAsync": false,
+			"name": "notExportNotAsyncFunction",
+			"params": [],
+			"doc": ""
+		},
+		{
+			"isArrow": true,
+			"isExport": true,
+			"isAsync": false,
+			"name": "arrowFunctionLikeVariable",
+			"params": [],
+			"doc": ""
+		},
+		{
+			"isArrow": true,
+			"isExport": false,
+			"isAsync": false,
+			"name": "arrowNotExportFunction",
+			"params": [],
+			"doc": ""
+		},
+		{
+			"isArrow": true,
+			"isExport": true,
+			"isAsync": true,
+			"name": "arrowAsyncFunctionLikeVariable",
+			"params": [
+				{
+					"name": "params1",
+					"type": "string",
+					"mandatory": true
+				}
+			],
+			"doc": ""
+		},
+		{
+			"isArrow": true,
+			"isExport": false,
+			"isAsync": false,
+			"name": "arrowNotExportFunctionWithMixReturnValue",
+			"params": [],
+			"doc": ""
+		},
+		{
+			"isArrow": true,
+			"isExport": true,
+			"isAsync": true,
+			"name": "analogIdsTransformer",
+			"params": [
+				{
+					"name": "bol",
+					"type": "boolean",
+					"mandatory": true
+				}
+			],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": false,
+			"name": "funcWithFuncDescription",
+			"params": [],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": false,
+			"name": "funcWithFuncDescriptionAndOneParam",
+			"params": [
+				{
+					"name": "param",
+					"type": "number",
+					"mandatory": true
+				}
+			],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": false,
+			"isAsync": true,
+			"name": "asyncFuncWithFuncDescription",
+			"params": [],
+			"doc": ""
+		},
+		{
+			"isArrow": false,
+			"isExport": true,
+			"isAsync": true,
+			"name": "asyncFuncWithFuncDescriptionAndOneParam",
+			"params": [
+				{
+					"name": "param",
+					"type": "any",
+					"mandatory": false
+				}
+			],
+			"doc": ""
+		}
+	],
+	"classes": [
+		{
+			"name": "TestClassWithFunc",
+			"doc": "",
+			"methods": [
+				{
+					"returnType": null,
+					"name": "func1",
+					"start": 1737,
+					"end": 1783,
+					"text": "\n\n\tpublic async func1() {\n\t\tconsole.log(1);\n\t}",
+					"arguments": [],
+					"doc": ""
+				}
+			],
+			"typeParameters": [],
+			"typeParameterConstraint": [],
+			"implements": [],
+			"fields": [
+				{
+					"name": "func",
+					"doc": "",
+					"type": null,
+					"annotations": [],
+					"valueConstraint": {
+						"isCallConstraint": false,
+						"value": "() => {\n\t\tconsole.log(1);\n\t}"
+					},
+					"optional": false,
+					"decorators": []
+				}
+			],
+			"isInterface": false,
+			"decorators": [],
+			"annotations": [],
+			"extends": [],
+			"moduleName": null,
+			"annotationOverridings": {}
+		}
+	],
+	"aliases": [],
+	"enumDeclarations": [],
+	"imports": {},
+	"_imports": []
+}

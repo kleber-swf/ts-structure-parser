@@ -1,9 +1,6 @@
 // const airbnb = require('eslint-config-airbnb-base/rules/variables');
 
 // const noRestrictedGlobals = airbnb.rules['no-restricted-globals'];
-// const index = noRestrictedGlobals.findIndex(e => e.name === 'isNaN');
-// noRestrictedGlobals.splice(index, 1);
-
 module.exports = {
 	parser: '@typescript-eslint/parser',
 	parserOptions: { ecmaVersion: 2021, sourceType: 'module' },
