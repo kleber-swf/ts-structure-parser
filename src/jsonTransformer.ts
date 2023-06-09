@@ -24,11 +24,9 @@ export class JSONTransformer {
 		let regExp = / ?[a-zA-Z]\w+(\.\w+)?(\s)*:/g;
 		let m = jsonString.match(regExp);
 		if (m) {
-			m = m.map(item => {
-				return item.trim();
-			});
+			m = m.map((item: string) => item.trim());
 			m = JSONTransformer.unique(m);
-			m.forEach(match => {
+			m.forEach((match: string) => {
 				if (!(match.match(/ ?(true|false)[ ,}]?/))) {
 					const reg = new RegExp(match, 'g');
 					const replaceWord = `"${match.substring(0, match.length - 1).trim()}":`;
@@ -41,11 +39,9 @@ export class JSONTransformer {
 		regExp = /:(\s)*?[a-zA-Z]\w+(\.\w+)?/g;
 		m = jsonString.match(regExp);
 		if (m) {
-			m = m.map(item => {
-				return item.trim();
-			});
+			m = m.map((item: string) => item.trim());
 			m = JSONTransformer.unique(m);
-			m.forEach(match => {
+			m.forEach((match: string) => {
 				if (!(match.match(/ ?(true|false)[ ,}]?/))) {
 					const reg = new RegExp(match, 'g');
 					const replaceWord = `: "${match.substring(1, match.length).trim()}"`;

@@ -1,9 +1,10 @@
 import ts = require('typescript');
+import path = require('path');
+import fs = require('fs');
 
 export import tsm = require('./tsASTMatchers');
-export import helperMethodExtractor = require('./helperMethodExtractor');
+// export import helperMethodExtractor = require('./helperMethodExtractor');
 
-import fsUtil = require('./fsUtils');
 import { FieldModel, ModuleModel } from './../index';
 import Parser from './parser';
 
@@ -52,7 +53,6 @@ function parseImportDeclaration(node: ts.Node, module: ModuleModel, modulePath: 
 	let localAbsPath: string[];
 	let localAbsPathString: string;
 	let localNodeModule = false;
-	const path = require('path');
 
 	tsm.Matching.visit(localMod, m => {
 		if (m.kind === ts.SyntaxKind.NamedImports) {
@@ -65,7 +65,7 @@ function parseImportDeclaration(node: ts.Node, module: ModuleModel, modulePath: 
 		if (m.kind === ts.SyntaxKind.StringLiteral) {
 			const localPath = m.getText().substring(1, m.getText().length - 1);
 			if (localPath[0] === '.') {
-				const localP = fsUtil.resolve(fsUtil.dirname(modulePath) + '/', localPath).split(process.cwd()).join('.');
+				const localP = path.resolve(path.dirname(modulePath) + '/', localPath).split(process.cwd()).join('.');
 				localAbsPath = localP.split(path.sep);
 				localAbsPathString = localP;
 			} else {
@@ -138,17 +138,17 @@ function parseImportEqualsDeclaraction(node: ts.Node, module: ModuleModel, modul
 	const namespace = imp.name.text;
 	if (namespace === 'RamlWrapper') return;
 
-	const path = imp.moduleReference as ts.ExternalModuleReference;
-	const literal = path.expression as ts.StringLiteral;
+	const ref = imp.moduleReference as ts.ExternalModuleReference;
+	const literal = ref.expression as ts.StringLiteral;
 	const importPath = literal.text;
-	const absPath = fsUtil.resolve(fsUtil.dirname(modulePath) + '/', importPath) + '.ts';
+	const absPath = path.resolve(path.dirname(modulePath) + '/', importPath) + '.ts';
 
-	if (!fsUtil.existsSync(absPath)) {
+	if (!fs.existsSync(absPath)) {
 		throw new Error('Path ' + importPath + ' resolve to ' + absPath + 'do not exists');
 	}
 
 	if (!modules[absPath]) {
-		const cnt = fsUtil.readFileSync(absPath);
+		const cnt = fs.readFileSync(absPath).toString();
 		parseStruct(cnt, modules, absPath);
 	}
 
@@ -160,7 +160,7 @@ function parseTypeAliasDeclaration(node: ts.Node, module: ModuleModel, modulePat
 	if (!alias.name) return;
 	module.aliases.push({
 		name: alias.name.text,
-		type: Parser.parseType(alias.type, modulePath)
+		type: Parser.parseType(alias.type, modulePath),
 	});
 }
 
@@ -184,14 +184,14 @@ function parseEnumDeclaration(node: ts.Node, module: ModuleModel) {
 function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: string, modulePath: string,
 	moduleName: string, isInterface: boolean) {
 	const classDecl = node as ts.ClassDeclaration;
-
 	if (!classDecl) return;
+
 	const fields: { [n: string]: FieldModel } = {};
 	const clazz = Parser.createClassModel(classDecl.name.text, isInterface);
 	clazz.doc = Parser.extractTsDoc(classDecl.getFullText());
 
 	if (classDecl.decorators && classDecl.decorators.length) {
-		clazz.decorators = classDecl.decorators.map((el: ts.Decorator) => Parser.parseDecorator(el.expression));
+		clazz.decorators = classDecl.decorators.map(el => Parser.parseDecorator(el.expression));
 	}
 
 	clazz.moduleName = moduleName;
@@ -201,6 +201,16 @@ function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: stri
 		if (member.kind === ts.SyntaxKind.MethodDeclaration) {
 			const method = Parser.parseMethod(member as ts.MethodDeclaration, content, modulePath);
 			clazz.methods.push(method);
+			return;
+		}
+
+		if (member.kind === ts.SyntaxKind.GetAccessor) {
+			console.log('getter');
+			return;
+		}
+
+		if (member.kind === ts.SyntaxKind.SetAccessor) {
+			console.log('setter');
 			return;
 		}
 
@@ -236,14 +246,9 @@ function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: stri
 	});
 
 	if (classDecl.typeParameters) {
-		classDecl.typeParameters.forEach(param => {
-			clazz.typeParameters.push(param.name.getText());
-			if (!param.constraint) {
-				clazz.typeParameterConstraint.push(null);
-			} else {
-				clazz.typeParameterConstraint
-					.push(param.constraint['typeName'] ? param.constraint['typeName']['text'] : null);
-			}
+		clazz.typeParameterConstraint = classDecl.typeParameters.map(param => {
+			if (!param.constraint) return null;
+			return param.constraint['typeName'] ? param.constraint['typeName'].text : null;
 		});
 	}
 
@@ -252,12 +257,10 @@ function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: stri
 			heritage.types.forEach(y => {
 				if (heritage.token === ts.SyntaxKind.ExtendsKeyword) {
 					clazz.extends.push(Parser.parseType(y, modulePath));
+				} else if (heritage.token === ts.SyntaxKind.ImplementsKeyword) {
+					clazz.implements.push(Parser.parseType(y, modulePath));
 				} else {
-					if (heritage.token === ts.SyntaxKind.ImplementsKeyword) {
-						clazz.implements.push(Parser.parseType(y, modulePath));
-					} else {
-						throw new Error('Unknown token class heritage');
-					}
+					throw new Error('Unknown token class heritage');
 				}
 			});
 		});
@@ -265,7 +268,7 @@ function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: stri
 }
 
 
-export function parseStruct(content: string, modules: { [path: string]: ModuleModel }, modulePath: string): ModuleModel {
+export function parseStruct(content: string, modules: { [id: string]: ModuleModel }, modulePath: string): ModuleModel {
 	const source = parseSource(content);
 	const module = Parser.createModuleModel(modulePath);
 	let moduleName: string = null;

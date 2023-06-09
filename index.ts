@@ -1,5 +1,4 @@
 import ts = require('typescript');
-export import helpers = require("./src/helpers");
 import tsStructureParser = require("./src/tsStructureParser");
 
 export interface ModuleModel {

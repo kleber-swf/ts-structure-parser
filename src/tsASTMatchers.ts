@@ -53,37 +53,18 @@ export namespace Matching {
 		}
 
 		public doMatch(n: Node): any {
-			if (!n) {
-				return null;
-			}
-			if (this.nodeType() === n.kind) {
-				return this.match(n);
-			}
+			return n && this.nodeType() === n.kind ? this.match(n) : null;
 		}
 	}
 
 	export class ClassDeclarationMatcher extends BasicMatcher implements TypedMatcher<ts.ClassDeclaration> {
-		protected match(node: Node): ts.ClassDeclaration {
-			return <ts.ClassDeclaration>node;
-		}
-
-		public constructor() {
-			super();
-		}
-
-		public nodeType(): ts.SyntaxKind {
-			return ts.SyntaxKind.ClassDeclaration;
-		}
+		protected match(node: Node): ts.ClassDeclaration { return node as ts.ClassDeclaration; }
+		public nodeType(): ts.SyntaxKind { return ts.SyntaxKind.ClassDeclaration; }
 	}
 
 	export class FieldMatcher extends BasicMatcher implements TypedMatcher<ts.ClassDeclaration> {
-		public match(node: ts.PropertyDeclaration): ts.PropertyDeclaration {
-			return node;
-		}
-
-		public nodeType(): ts.SyntaxKind {
-			return ts.SyntaxKind.PropertyDeclaration;
-		}
+		public match(node: ts.PropertyDeclaration): ts.PropertyDeclaration { return node; }
+		public nodeType(): ts.SyntaxKind { return ts.SyntaxKind.PropertyDeclaration; }
 	}
 
 	export class AssignmentExpressionMatcher extends BasicMatcher implements TypedMatcher<ts.BinaryExpression> {
@@ -111,7 +92,6 @@ export namespace Matching {
 			if (this.left.doMatch(node.name) && this.right.doMatch(node.initializer)) {
 				return this.tr(node);
 			}
-
 		}
 
 		public constructor(
@@ -132,12 +112,8 @@ export namespace Matching {
 		public match(node: ts.ExpressionStatement): any {
 			const exp = this.expression.doMatch(node.expression);
 			if (exp) {
-
 				const v = this.tr(node.expression);
-
-				if (v === true) {
-					return exp;
-				}
+				if (v === true) return exp;
 				return v;
 			}
 			return null;
@@ -153,62 +129,28 @@ export namespace Matching {
 	}
 
 	class SimpleIdentMatcher extends BasicMatcher implements TypedMatcher<Identifier> {
-
-		public match(node: Identifier): any {
-			if (node.text === this.val) {
-				return true;
-			}
-			return null;
-		}
-
-		public constructor(private val: string) {
-			super();
-		}
-
-		public nodeType(): SyntaxKind {
-			return ts.SyntaxKind.Identifier;
-		}
+		public constructor(private val: string) { super(); }
+		public match(node: Identifier): any { return node.text === this.val ? true : null; }
+		public nodeType(): SyntaxKind { return ts.SyntaxKind.Identifier; }
 	}
 
 
 
 	class TrueMatcher<T extends Node> implements TypedMatcher<T> {
-
-		public doMatch(node: Node): any {
-			return true;
-		}
-
-		public nodeType(): ts.SyntaxKind {
-			return null;
-		}
+		public doMatch(_node: Node): any { return true; }
+		public nodeType(): ts.SyntaxKind { return null; }
 	}
 	class CallExpressionMatcher extends BasicMatcher implements TypedMatcher<CallExpression> {
-		public match(node: CallExpression): any {
-			if (this.calleeMatcher.doMatch(node.expression)) {
-				return this.tr(node);
-			}
-			return null;
-		}
-
-		public constructor(private calleeMatcher: TypedMatcher<Expression>, private tr: Transformer<CallExpression, any>) {
-			super();
-		}
-
-		public nodeType(): SyntaxKind {
-			return ts.SyntaxKind.CallExpression;
-		}
+		public constructor(private calleeMatcher: TypedMatcher<Expression>, private tr: Transformer<CallExpression, any>) { super(); }
+		public match(node: CallExpression): any { return this.calleeMatcher.doMatch(node.expression) ? this.tr(node) : null; }
+		public nodeType(): SyntaxKind { return ts.SyntaxKind.CallExpression; }
 	}
 
 	export const SKIP = {};
 
 	export function visit<T>(n: Node, cb: NodeCallback<T>): T {
 		const r0 = cb(n);
-		if (r0) {
-			if (r0 === SKIP) {
-				return null;
-			}
-			return r0;
-		}
+		if (r0) return r0 === SKIP ? null : r0;
 
 		const result: T = ts.forEachChild<T>(n, x => {
 			const r = visit(x, cb);
@@ -245,10 +187,7 @@ export namespace Matching {
 
 		public end() {
 			const ce = this.path[this.path.length - 1]._callExpression;
-			if (ce) {
-				return ce.end;
-			}
-			return this.start();
+			return ce ? ce.end : this.start();
 		}
 
 		public constructor(base: string, private _baseNode: ts.Node) {
@@ -264,10 +203,9 @@ export namespace Matching {
 
 	class MemberExpressionMatcher extends BasicMatcher implements TypedMatcher<ts.PropertyAccessExpression> {
 		public match(node: ts.PropertyAccessExpression): any {
-			if (this.objectMatcher.doMatch(node.expression) && this.propertyMatcher.doMatch(node.name)) {
-				return this.tr(node);
-			}
-			return null;
+			return (this.objectMatcher.doMatch(node.expression) && this.propertyMatcher.doMatch(node.name))
+				? this.tr(node)
+				: null;
 		}
 
 		public nodeType(): SyntaxKind {
@@ -289,7 +227,7 @@ export namespace Matching {
 			const ci = arg.indexOf('(*)');
 			let isCall = false;
 			if (ci !== -1) {
-				arg = arg.substr(0, ci);
+				arg = arg.substring(0, ci);
 				isCall = true;
 			}
 			if (result == null) {
@@ -300,9 +238,7 @@ export namespace Matching {
 			if (isCall) {
 				result = new CallExpressionMatcher(result, tr);
 			}
-
 		}
-		//console.log(result)
 		return result;
 	}
 
