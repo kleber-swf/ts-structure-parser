@@ -1,73 +1,74 @@
-module.exports = function(grunt) {
-    "use strict";
-  
-    grunt.initConfig({
-      
-      ts: {
-        app: {
-          files: [{
-            src: [
-              "./src/**/*.ts",
-              "!./test/**"
-            ],
-            dest: "./dist"
-          },],
-          tsconfig: true
-        },
+module.exports = function (grunt) {
+  "use strict";
 
-        test: {
-          files: [{
-            src: [
-              "./test/**/*.ts", 
-              "!./src/**"
-            ],
-            dest: "./test/dist"
-          },],
-          tsconfig: true
-        }
-      },
+  grunt.initConfig({
 
-      clean: {
-        app: ['./dist'],
-        test: ['./test/dist']
-      },
-      
-      tslint: {
-        options: {
-          configuration: "tslint.json"
-        },
-        files: {
+    ts: {
+      app: {
+        files: [{
           src: [
-            "./src/\*\*/\*.ts",
-            "./test/src/\*\*/\*.ts",
-          ]
-        }
+            "./src/**/*.ts",
+            "!./test/**"
+          ],
+          dest: "./dist"
+        },],
+        tsconfig: true
       },
 
-      mochaTest: {
-        test: {
-          options: {
-            log: true,
-            run: true
-          },
-          src: ['./test/**/*.js']
+      test: {
+        files: [{
+          src: [
+            "./test/**/*.ts",
+            "!./src/**"
+          ],
+          dest: "./test/dist"
+        },],
+        tsconfig: true
+      }
+    },
+
+    clean: {
+      app: ['./dist'],
+      test: ['./test/dist']
+    },
+
+    eslint: {
+      // options: {
+
+      //   configuration: ".eslintrc.js"
+      // },
+      files: {
+        src: [
+          "./src/\*\*/\*.ts",
+          "./test/src/\*\*/\*.ts",
+        ]
+      }
+    },
+
+    mochaTest: {
+      test: {
+        options: {
+          log: true,
+          run: true
         },
+        src: ['./test/**/*.js']
       },
+    },
 
-    });
-  
-    grunt.loadNpmTasks("grunt-ts");
-    grunt.loadNpmTasks("grunt-tslint");
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-contrib-clean');
+  });
+
+  grunt.loadNpmTasks("grunt-ts");
+  grunt.loadNpmTasks("grunt-eslint");
+  grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
 
-    grunt.registerTask("build", [
-      "clean:app", "ts:app", "tslint"
-    ]);
+  grunt.registerTask("build", [
+    "clean:app", "ts:app", "eslint"
+  ]);
 
-    grunt.registerTask("test", [
-      "clean:test", "ts:test",  "mochaTest"
-    ]);    
+  grunt.registerTask("test", [
+    "clean:test", "ts:test", "mochaTest"
+  ]);
 
-  };
+};
