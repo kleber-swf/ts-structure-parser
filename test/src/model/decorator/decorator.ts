@@ -1,46 +1,46 @@
 export function ClassDecorator(): any {
-    return function() {
-        var f;
-    };
+	return function () {
+		const f = 0;
+	};
 }
 
-export function ClassDecoratorWithParam(name: string): any {
-    return function() {
-        var f;
-    };
+export function ClassDecoratorWithParam(_name: string): any {
+	return function () {
+		const f = 0;
+	};
 }
 
 export function FieldDecorator(): any {
-    return function() {
-        var f;
-    };
+	return function () {
+		const f = 0;
+	};
 }
 
-export function FieldDecoratorWithParam(name: string): any {
-    return function() {
-        var f;
-    };
+export function FieldDecoratorWithParam(_name: string): any {
+	return function () {
+		const f = 0;
+	};
 }
 
-export function FieldDecoratorWith2Params(name: string, options: any): any {
-    return function() {
-        var f;
-    };
+export function FieldDecoratorWith2Params(_name: string, _options: any): any {
+	return function () {
+		const f = 0;
+	};
 }
 
-export function FieldDecoratorWithFuncParam(func: Function): any {
-    return function() {
-        var f;
-    };
+export function FieldDecoratorWithFuncParam(_func: any): any {
+	return function () {
+		const f = 0;
+	};
 }
-export function FieldDecoratorWithObjectParam(func: Object): any {
-    return function() {
-        var f;
-    };
+export function FieldDecoratorWithObjectParam(_func: any): any {
+	return function () {
+		const f = 0;
+	};
 }
 
-export function FieldDecoratorWithAnyParam(anyParams: any): any {
-    return function() {
-        var f;
-    };
+export function FieldDecoratorWithAnyParam(_params: any): any {
+	return function () {
+		const f = 0;
+	};
 }

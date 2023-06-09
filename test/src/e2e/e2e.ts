@@ -1,37 +1,34 @@
-"use strict";
+'use strict';
 
-import * as fs from "fs";
-import {} from "mocha";
+import * as fs from 'fs';
+import { } from 'mocha';
+import { expect } from 'chai';
+import { ModuleModel } from '../../../index';
+import { parseStruct } from '../../../src/tsStructureParser';
 
-import {Module} from "../../../index" ;
-import {parseStruct} from "../../../src/tsStructureParser";
-import {expect} from "chai";
 
+describe('E2E Tests', () => {
 
-describe("E2E Tests", () => {
+	it('Hero', (done) => {
+		const filePath = './test/src/model/hero/hero.ts';
+		const structPath = './test/src/model/hero/hero.json';
 
-      it("Hero", (done) => {
-        let filePath: string = "./test/src/model/hero/hero.ts";
-        let structPath: string = "./test/src/model/hero/hero.json";
+		const decls = fs.readFileSync(filePath).toString();
+		const parsedStructure: ModuleModel = parseStruct(decls, {}, filePath);
+		const expectedStruct: any = JSON.parse(fs.readFileSync(structPath, 'utf8'));
+		expect(parsedStructure).be.deep.equal(expectedStruct);
 
-        let decls = fs.readFileSync(filePath).toString();
-        let parsedStructure: Module = parseStruct(decls, {}, filePath);
-        let expectedStruct: any = JSON.parse(fs.readFileSync(structPath, "utf8"));
-        expect(parsedStructure).be.deep.equal(expectedStruct);
+		done();
+	});
 
-          done();
-      });
+	it('Function', (done) => {
+		const filePath = './test/src/model/hero/testFunction.ts';
+		const expectedFunc = './test/src/model/hero/testFunction.json';
 
-      it("Function", (done) => {
-        let filePath: string = "./test/src/model/hero/testFunction.ts";
-        let expectedFunc: string = "./test/src/model/hero/testFunction.json";
-
-        let decls = fs.readFileSync(filePath).toString();
-        let parsedStructure: Module = parseStruct(decls, {}, filePath);
-        const functions = parsedStructure.functions;
-        let expectedStruct: any = JSON.parse(fs.readFileSync(expectedFunc, "utf8"));
-        expect(functions).be.deep.equal(expectedStruct);
-        done();
-      });
-
+		const decls = fs.readFileSync(filePath).toString();
+		const parsedStructure: ModuleModel = parseStruct(decls, {}, filePath);
+		const expectedStruct: any = JSON.parse(fs.readFileSync(expectedFunc, 'utf8'));
+		expect(parsedStructure).be.deep.equal(expectedStruct);
+		done();
+	});
 });

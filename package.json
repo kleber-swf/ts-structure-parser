@@ -1,44 +1,45 @@
 {
-  "name": "ts-file-parser",
-  "version": "0.0.22",
-  "description": "This repository provides a parser for `*.ts` files. It parses the structure of a file and provides JSON object that contains its declaration.",
-  "private": false,
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "grunt build",
-    "test": "grunt test"
-  },
-  "dependencies": {
-    "grunt-eslint": "^24.1.0",
-    "typescript": "2.7.2"
-  },
-  "devDependencies": {
-    "@types/chai": "4.1.2",
-    "@types/mocha": "2.2.48",
-    "@types/node": "8.9.4",
-    "@typescript-eslint/eslint-plugin": "^5.59.9",
-    "@typescript-eslint/parser": "^5.59.9",
-    "chai": "4.1.1",
-    "eslint": "^8.42.0",
-    "grunt": "1.0.2",
-    "grunt-contrib-clean": "1.1.0",
-    "grunt-mocha-test": "0.13.2",
-    "grunt-ts": "6.0.0-beta.16",
-    "mocha": "3.5.0",
-    "ts-node": "3.3.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AbatapCompany/ts-structure-parser.git"
-  },
-  "keywords": [
-    "typescript",
-    "content",
-    "parser"
-  ],
-  "homepage": "https://github.com/AbatapCompany/ts-structure-parser",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/AbatapCompany/ts-structure-parser/issues"
-  }
+	"name": "ts-file-parser",
+	"version": "0.0.22",
+	"description": "This repository provides a parser for `*.ts` files. It parses the structure of a file and provides JSON object that contains its declaration.",
+	"private": false,
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "grunt build",
+		"test": "grunt test",
+		"lint": "eslint --cache --fix --color --ext .ts,.js \"src\" \"test/src\""
+	},
+	"dependencies": {
+		"grunt-eslint": "^24.1.0",
+		"typescript": "2.7.2"
+	},
+	"devDependencies": {
+		"@types/chai": "4.1.2",
+		"@types/mocha": "2.2.48",
+		"@types/node": "8.9.4",
+		"@typescript-eslint/eslint-plugin": "^5.59.9",
+		"@typescript-eslint/parser": "^5.59.9",
+		"chai": "4.1.1",
+		"eslint": "^8.42.0",
+		"grunt": "1.0.2",
+		"grunt-contrib-clean": "1.1.0",
+		"grunt-mocha-test": "0.13.2",
+		"grunt-ts": "6.0.0-beta.16",
+		"mocha": "3.5.0",
+		"ts-node": "3.3.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AbatapCompany/ts-structure-parser.git"
+	},
+	"keywords": [
+		"typescript",
+		"content",
+		"parser"
+	],
+	"homepage": "https://github.com/AbatapCompany/ts-structure-parser",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/AbatapCompany/ts-structure-parser/issues"
+	}
 }
