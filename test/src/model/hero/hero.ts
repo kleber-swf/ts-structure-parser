@@ -89,6 +89,7 @@ export class Hero {
 	/** Foo documentation */
 	@FieldDecoratorWithParam('array of objects from external reference')
 	public get foo() { return this._foo; }
+
 	public set foo(value: boolean) { this._foo = value; }
 
 	private _bar = 0;

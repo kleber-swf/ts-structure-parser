@@ -253,7 +253,7 @@ function parseClassDeclaration(node: ts.Node, module: ModuleModel, content: stri
 			return;
 		}
 
-		const field = fieldMatcher.doMatch(member)
+		const field = fieldMatcher.doMatch(member);
 		if (field) parseField(field, clazz, modulePath, fields);
 	});
 
