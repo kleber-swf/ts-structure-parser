@@ -3,18 +3,15 @@ import tsm = require('./tsASTMatchers');
 import * as fs from 'fs';
 import * as path from 'path';
 import { Arg, HelperMethod, Meta } from './helpers';
-import index = require('../index');
-import tsStructureParser = require('./tsStructureParser');
+import Parser from './parser';
 
 export function getHelperMethods(srcPath: string): HelperMethod[] {
-
 	const result: HelperMethod[] = [];
 	const content = fs.readFileSync(path.resolve(srcPath)).toString();
 
 	const mod = ts.createSourceFile('sample.ts', content, ts.ScriptTarget.ES3, true);
 
 	tsm.Matching.visit(mod, x => {
-
 		const node = <any>x;
 		if (node.kind === ts.SyntaxKind.FunctionDeclaration) {
 
@@ -30,9 +27,9 @@ export function getHelperMethods(srcPath: string): HelperMethod[] {
 				meta.name = originalName;
 			}
 			wrapperMethodName = meta.name ? meta.name : originalName;
-			const args = node.parameters ? node.parameters.map(a => readArg(a, srcPath)) : [];
-			const override = meta.override ? meta.override : false;
-			const returnType = tsStructureParser.buildType(node.type, srcPath);
+			const args = node.parameters ? node.parameters.map((a: any) => readArg(a, srcPath)) : [];
+			// const override = meta.override ? meta.override : false;
+			const returnType = Parser.parseType(node.type, srcPath);
 			result.push(new HelperMethod(originalName, wrapperMethodName, returnType, args, meta));
 		}
 	});
@@ -91,12 +88,12 @@ function readArg(node: any, srcPath: string): Arg {
 
 	const name = node.name.text;
 
-	const type = tsStructureParser.buildType(node.type, srcPath);
+	const type = Parser.parseType(node.type, srcPath);
 
-	let defaultValue;
+	let defaultValue: any;
 	let optional = node.questionToken != null;
 	if (node.initializer != null) {
-		defaultValue = tsStructureParser.parseArg(node.initializer);
+		defaultValue = Parser.parseArg(node.initializer);
 		optional = true;
 	}
 	return {
