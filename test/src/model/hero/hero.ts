@@ -11,6 +11,13 @@ export enum TestEnum {
 	Baz = null
 }
 
+export interface IHero {
+	id: number;
+	name: string;
+	readonly bar: number;
+	action(param: string): void;
+}
+
 /**
  * Hero Detail comment before decorators
  * with multiple lines
@@ -55,7 +62,7 @@ export class HeroDetail {
 * Hero class documentation after decorators
 * with multiple lines
 */
-export class Hero {
+export class Hero implements IHero {
 
 	@FieldDecoratorWithParam('int, primary key')
 	@FieldDecorator()
@@ -102,4 +109,8 @@ export class Hero {
 	@FieldDecoratorWithParam('array of objects from external reference')
 	/** Baz documentation */
 	public set baz(value: string) { this._baz = value; }
+
+	public action(param: string) {
+		console.log('action', param);
+	}
 }

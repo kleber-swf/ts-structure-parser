@@ -29,7 +29,7 @@ namespace Parser {
 		};
 	}
 
-	export function createFieldModel(field: ts.PropertyDeclaration, path: string): tsp.FieldModel {
+	export function createFieldModel(field: ts.PropertySignature | ts.PropertyDeclaration, path: string): tsp.FieldModel {
 		const name = field.name.getText();
 		const isInitializer = name.charAt(0) === '$';
 		return {

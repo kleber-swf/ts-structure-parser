@@ -170,7 +170,9 @@
 				},
 				{
 					"name": "ClassDecoratorWithParam",
-					"arguments": ["HeroDetailClass"]
+					"arguments": [
+						"HeroDetailClass"
+					]
 				}
 			],
 			"annotations": [],
@@ -212,7 +214,9 @@
 					"decorators": [
 						{
 							"name": "FieldDecoratorWithParam",
-							"arguments": ["int, primary key"]
+							"arguments": [
+								"int, primary key"
+							]
 						},
 						{
 							"name": "FieldDecorator",
@@ -265,7 +269,9 @@
 					"decorators": [
 						{
 							"name": "FieldDecoratorWithParam",
-							"arguments": ["external reference"]
+							"arguments": [
+								"external reference"
+							]
 						},
 						{
 							"name": "FieldDecorator",
@@ -293,7 +299,9 @@
 					"decorators": [
 						{
 							"name": "FieldDecoratorWithParam",
-							"arguments": ["array of objects from external reference"]
+							"arguments": [
+								"array of objects from external reference"
+							]
 						},
 						{
 							"name": "FieldDecorator",
@@ -325,11 +333,15 @@
 						},
 						{
 							"name": "FieldDecoratorWithFuncParam",
-							"arguments": ["() => { console.log('function'); }"]
+							"arguments": [
+								"() => { console.log('function'); }"
+							]
 						},
 						{
 							"name": "FieldDecoratorWithFuncParam",
-							"arguments": ["testFunction"]
+							"arguments": [
+								"testFunction"
+							]
 						}
 					]
 				},
@@ -379,7 +391,9 @@
 					"decorators": [
 						{
 							"name": "FieldDecoratorWithParam",
-							"arguments": ["array of objects from external reference"]
+							"arguments": [
+								"array of objects from external reference"
+							]
 						}
 					]
 				},
@@ -398,7 +412,9 @@
 					"decorators": [
 						{
 							"name": "FieldDecoratorWithParam",
-							"arguments": ["array of objects from external reference"]
+							"arguments": [
+								"array of objects from external reference"
+							]
 						}
 					]
 				},
@@ -410,7 +426,9 @@
 					"decorators": [
 						{
 							"name": "FieldDecoratorWithParam",
-							"arguments": ["array of objects from external reference"]
+							"arguments": [
+								"array of objects from external reference"
+							]
 						}
 					]
 				}
@@ -448,7 +466,9 @@
 				},
 				{
 					"name": "ClassDecoratorWithParam",
-					"arguments": ["HeroClass"]
+					"arguments": [
+						"HeroClass"
+					]
 				},
 				{
 					"name": "FieldDecoratorWithAnyParam",
@@ -511,13 +531,30 @@
 				"FieldDecoratorWithFuncParam",
 				"FieldDecoratorWithParam"
 			],
-			"absPathNode": [".", "test", "src", "model", "decorator", "decorator"],
+			"absPathNode": [
+				".",
+				"test",
+				"src",
+				"model",
+				"decorator",
+				"decorator"
+			],
 			"absPathString": "./test/src/model/decorator/decorator",
 			"isNodeModule": false
 		},
 		{
-			"clauses": ["TestClassWithFunc", "testFunction"],
-			"absPathNode": [".", "test", "src", "model", "hero", "testFunction"],
+			"clauses": [
+				"TestClassWithFunc",
+				"testFunction"
+			],
+			"absPathNode": [
+				".",
+				"test",
+				"src",
+				"model",
+				"hero",
+				"testFunction"
+			],
 			"absPathString": "./test/src/model/hero/testFunction",
 			"isNodeModule": false
 		}
